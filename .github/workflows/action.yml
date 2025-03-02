@@ -2,7 +2,7 @@ name: Lotto Buy Bot (로또 구매봇)
 
 on:
   schedule:
-    - cron: "50 23 * * 5" # UST 기준의 크론. UST 23:50 는 KST 08:50
+    - cron: "50 23 * * 4" # UST 기준의 크론. UST 23:50 는 KST 08:50
   workflow_dispatch:
 
 jobs:
