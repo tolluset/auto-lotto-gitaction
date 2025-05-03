@@ -1,7 +1,7 @@
 import re
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 import pytz
@@ -114,8 +114,10 @@ def run(playwright: Playwright) -> None:
             )
         url = "https://dhlottery.co.kr/myPage.do"
         querystring = {"method": "lottoBuyList"}
-        now_date = get_now().date().strftime("%Y%m%d")
-        payload = f"searchStartDate={now_date}&searchEndDate={now_date}&winGrade=2"
+        now = get_now().date()
+        now_date = now.strftime("%Y%m%d")
+        yesterday_date = (now - timedelta(days=1)).strftime("%Y%m%d")
+        payload = f"searchStartDate={yesterday_date}&searchEndDate={now_date}&winGrade=2"
         headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
             "Accept-Language": "ko,en;q=0.9,ko-KR;q=0.8,en-US;q=0.7",
@@ -134,7 +136,7 @@ def run(playwright: Playwright) -> None:
         }
         res = session.post(url, data=payload, headers=headers, params=querystring)
         res.encoding = "euc-kr"  
-        html = BeautifulSoup(res.text, "lxml")
+        # html = BeautifulSoup(res.text, "lxml")
         print(f"[DEBUG] res.text: {res.text}")
         
         a_tag = html.select_one("tbody > tr:nth-child(1) > td:nth-child(4) > a")
