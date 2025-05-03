@@ -113,7 +113,7 @@ def run(playwright: Playwright) -> None:
                 cookie["name"], cookie["value"], domain=cookie["domain"]
             )
         url = "https://dhlottery.co.kr/myPage.do"
-        querystring = {"method": "lottoBuyListView"}
+        querystring = {"method": "lottoBuyList"}
         now_date = get_now().date().strftime("%Y%m%d")
         payload = f"searchStartDate={now_date}&searchEndDate={now_date}&winGrade=2"
         headers = {
@@ -133,8 +133,9 @@ def run(playwright: Playwright) -> None:
             "sec-ch-ua-mobile": "?0",
         }
         res = session.post(url, data=payload, headers=headers, params=querystring)
-        html = BeautifulSoup(res.content, "lxml")
-        print(f"[DEBUG] res.content: {res.content}")
+        res.encoding = "euc-kr"  
+        html = BeautifulSoup(res.text, "lxml")
+        print(f"[DEBUG] res.text: {res.text}")
         
         a_tag = html.select_one("tbody > tr:nth-child(1) > td:nth-child(4) > a")
         if a_tag:
