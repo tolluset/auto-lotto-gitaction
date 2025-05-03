@@ -123,7 +123,7 @@ def run(playwright: Playwright) -> None:
             "Connection": "keep-alive",
             "Content-Type": "application/x-www-form-urlencoded",
             "Origin": "https://dhlottery.co.kr",
-            "Referer": "https://dhlottery.co.kr/myPage.do?method=lottoBuyListView",
+            "Referer": "https://dhlottery.co.kr/userSsl.do?method=myPage",
             "Sec-Fetch-Dest": "iframe",
             "Sec-Fetch-Mode": "navigate",
             "Sec-Fetch-Site": "same-origin",
@@ -134,9 +134,15 @@ def run(playwright: Playwright) -> None:
         }
         res = session.post(url, data=payload, headers=headers, params=querystring)
         html = BeautifulSoup(res.content, "lxml")
-        a_tag_href = html.select_one(
-            "tbody > tr:nth-child(1) > td:nth-child(4) > a"
-        ).get("href")
+        
+        a_tag = html.select_one("tbody > tr:nth-child(1) > td:nth-child(4) > a")
+        if a_tag:
+            print(f"[DEBUG] a_tag: {a_tag}")
+            a_tag_href = a_tag.get("href")
+        else:
+            print("[ERROR] a 태그를 찾을 수 없음.")
+            a_tag_href = None  # 또는 적절한 기본값
+
         detail_info = re.findall(r"\d+", a_tag_href)
         page.goto(
             url=f"https://dhlottery.co.kr/myPage.do?method=lotto645Detail&orderNo={detail_info[0]}&barcode={detail_info[1]}&issueNo={detail_info[2]}"
