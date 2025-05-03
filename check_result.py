@@ -133,6 +133,7 @@ def run(playwright: Playwright) -> None:
             "sec-ch-ua-mobile": "?0",
         }
         res = session.post(url, data=payload, headers=headers, params=querystring)
+        print(f"[DEBUG] res: {res}")
         html = BeautifulSoup(res.content, "lxml")
         
         a_tag = html.select_one("tbody > tr:nth-child(1) > td:nth-child(4) > a")
