@@ -136,8 +136,8 @@ def run(playwright: Playwright) -> None:
         }
         res = session.post(url, data=payload, headers=headers, params=querystring)
         res.encoding = "euc-kr"  
-        # html = BeautifulSoup(res.text, "lxml")
-        print(f"[DEBUG] res.text: {res.text}")
+        html = BeautifulSoup(res.text, "lxml")
+        # print(f"[DEBUG] res.text: {res.text}")
         
         a_tag = html.select_one("tbody > tr:nth-child(1) > td:nth-child(4) > a")
         if a_tag:
