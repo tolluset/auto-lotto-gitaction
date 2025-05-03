@@ -113,7 +113,7 @@ def run(playwright: Playwright) -> None:
                 cookie["name"], cookie["value"], domain=cookie["domain"]
             )
         url = "https://dhlottery.co.kr/myPage.do"
-        querystring = {"method": "lottoBuyList"}
+        querystring = {"method": "lottoBuyListView"}
         now_date = get_now().date().strftime("%Y%m%d")
         payload = f"searchStartDate={now_date}&searchEndDate={now_date}&winGrade=2"
         headers = {
